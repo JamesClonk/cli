@@ -156,6 +156,10 @@
     "translation": "   [-i NUM_INSTANCES] [-k DISK] [-m MEMORY] [--hostname HOST] [-p PATH] [-s STACK] [-t TIMEOUT] [-u HEALTH_CHECK_TYPE] \n"
   },
   {
+    "id": " [--router-group ROUTER_GROUP]",
+    "translation": ""
+  },
+  {
     "id": " added as '",
     "translation": " incluído como '"
   },
@@ -2376,6 +2380,10 @@
     "translation": ""
   },
   {
+    "id": "Incorrect Usage. Requires DOMAIN as an argument\n\n",
+    "translation": ""
+  },
+  {
     "id": "Incorrect Usage. Requires LABEL, PROVIDER and TOKEN as arguments\n\n",
     "translation": "Uso incorreto. Requer LABEL, PROVIDER e TOKEN como argumentos\n\n"
   },
@@ -3480,8 +3488,16 @@
     "translation": ""
   },
   {
+    "id": "Router group {{.RouterGroup}} not found",
+    "translation": ""
+  },
+  {
     "id": "Routes",
     "translation": "Rotas"
+  },
+  {
+    "id": "Routes for this domain will be configured only on the specified router group",
+    "translation": ""
   },
   {
     "id": "Routing API URI missing. Please log in again to set the URI automatically.",

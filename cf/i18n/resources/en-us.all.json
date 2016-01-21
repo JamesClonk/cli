@@ -156,6 +156,10 @@
     "translation": "   [-i NUM_INSTANCES] [-k DISK] [-m MEMORY] [--hostname HOST] [-p PATH] [-s STACK] [-t TIMEOUT] [-u HEALTH_CHECK_TYPE] [--route-path ROUTE_PATH]\n"
   },
   {
+    "id": " [--router-group ROUTER_GROUP]",
+    "translation": " [--router-group ROUTER_GROUP]"
+  },
+  {
     "id": " added as '",
     "translation": " added as '"
   },
@@ -2376,6 +2380,10 @@
     "translation": "Incorrect Usage. Requires DOMAIN and SERVICE_INSTANCE as arguments\n\n"
   },
   {
+    "id": "Incorrect Usage. Requires DOMAIN as an argument\n\n",
+    "translation": "Incorrect Usage. Requires DOMAIN as an argument\n\n"
+  },
+  {
     "id": "Incorrect Usage. Requires LABEL, PROVIDER and TOKEN as arguments\n\n",
     "translation": "Incorrect Usage. Requires LABEL, PROVIDER and TOKEN as arguments\n\n"
   },
@@ -3480,8 +3488,16 @@
     "translation": "Route {{.URL}} is already bound to service instance {{.ServiceInstanceName}}."
   },
   {
+    "id": "Router group {{.RouterGroup}} not found",
+    "translation": "Router group {{.RouterGroup}} not found"
+  },
+  {
     "id": "Routes",
     "translation": "Routes"
+  },
+  {
+    "id": "Routes for this domain will be configured only on the specified router group",
+    "translation": "Routes for this domain will be configured only on the specified router group"
   },
   {
     "id": "Routing API URI missing. Please log in again to set the URI automatically.",

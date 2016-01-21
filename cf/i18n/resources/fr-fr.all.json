@@ -156,6 +156,10 @@
     "translation": "   [-i NUM_INSTANCES] [-k DISK] [-m MEMORY] [--hostname HOST] [-p PATH] [-s STACK] [-t TIMEOUT] [-u HEALTH_CHECK_TYPE] \n"
   },
   {
+    "id": " [--router-group ROUTER_GROUP]",
+    "translation": ""
+  },
+  {
     "id": " added as '",
     "translation": " ajouté en tant que "
   },
@@ -2376,6 +2380,10 @@
     "translation": ""
   },
   {
+    "id": "Incorrect Usage. Requires DOMAIN as an argument\n\n",
+    "translation": ""
+  },
+  {
     "id": "Incorrect Usage. Requires LABEL, PROVIDER and TOKEN as arguments\n\n",
     "translation": "Syntaxe incorrecte. Requiert LIBELLE, FOURNISSEUR et JETON comme arguments\n\n"
   },
@@ -3480,7 +3488,15 @@
     "translation": ""
   },
   {
+    "id": "Router group {{.RouterGroup}} not found",
+    "translation": ""
+  },
+  {
     "id": "Routes",
+    "translation": ""
+  },
+  {
+    "id": "Routes for this domain will be configured only on the specified router group",
     "translation": ""
   },
   {

@@ -17,14 +17,14 @@ import (
 //go:generate counterfeiter -o fakes/fake_domain_repository.go . DomainRepository
 type DomainRepository interface {
 	ListDomainsForOrg(orgGuid string, cb func(models.DomainFields) bool) error
-	FindSharedByName(name string) (domain models.DomainFields, apiErr error)
-	FindPrivateByName(name string) (domain models.DomainFields, apiErr error)
-	FindByNameInOrg(name string, owningOrgGuid string) (domain models.DomainFields, apiErr error)
-	Create(domainName string, owningOrgGuid string) (createdDomain models.DomainFields, apiErr error)
-	CreateSharedDomain(domainName string) (apiErr error)
-	Delete(domainGuid string) (apiErr error)
-	DeleteSharedDomain(domainGuid string) (apiErr error)
-	FirstOrDefault(orgGuid string, name *string) (domain models.DomainFields, error error)
+	FindSharedByName(name string) (models.DomainFields, error)
+	FindPrivateByName(name string) (models.DomainFields, error)
+	FindByNameInOrg(name string, owningOrgGuid string) (models.DomainFields, error)
+	Create(domainName string, owningOrgGuid string) (models.DomainFields, error)
+	CreateSharedDomain(domainName string, routerGroupGuid string) error
+	Delete(domainGuid string) error
+	DeleteSharedDomain(domainGuid string) error
+	FirstOrDefault(orgGuid string, name *string) (models.DomainFields, error)
 }
 
 type CloudControllerDomainRepository struct {
@@ -50,7 +50,7 @@ func (repo CloudControllerDomainRepository) ListDomainsForOrg(orgGuid string, cb
 	return err
 }
 
-func (repo CloudControllerDomainRepository) listDomains(path string, cb func(models.DomainFields) bool) (apiErr error) {
+func (repo CloudControllerDomainRepository) listDomains(path string, cb func(models.DomainFields) bool) error {
 	return repo.gateway.ListPaginatedResources(
 		repo.config.ApiEndpoint(),
 		path,
@@ -64,44 +64,53 @@ func (repo CloudControllerDomainRepository) isOrgDomain(orgGuid string, domain m
 	return orgGuid == domain.OwningOrganizationGuid || domain.Shared
 }
 
-func (repo CloudControllerDomainRepository) FindSharedByName(name string) (domain models.DomainFields, apiErr error) {
+func (repo CloudControllerDomainRepository) FindSharedByName(name string) (models.DomainFields, error) {
 	return repo.findOneWithPath(repo.strategy.SharedDomainURL(name), name)
 }
 
-func (repo CloudControllerDomainRepository) FindPrivateByName(name string) (domain models.DomainFields, apiErr error) {
+func (repo CloudControllerDomainRepository) FindPrivateByName(name string) (models.DomainFields, error) {
 	return repo.findOneWithPath(repo.strategy.PrivateDomainURL(name), name)
 }
 
-func (repo CloudControllerDomainRepository) FindByNameInOrg(name string, orgGuid string) (domain models.DomainFields, apiErr error) {
-	domain, apiErr = repo.findOneWithPath(repo.strategy.OrgDomainURL(orgGuid, name), name)
+func (repo CloudControllerDomainRepository) FindByNameInOrg(name string, orgGuid string) (models.DomainFields, error) {
+	domain, err := repo.findOneWithPath(repo.strategy.OrgDomainURL(orgGuid, name), name)
 
-	switch apiErr.(type) {
+	switch err.(type) {
 	case *errors.ModelNotFoundError:
-		domain, apiErr = repo.FindSharedByName(name)
+		domain, err = repo.FindSharedByName(name)
 		if !domain.Shared {
-			apiErr = errors.NewModelNotFoundError("Domain", name)
+			err = errors.NewModelNotFoundError("Domain", name)
 		}
 	}
 
-	return
+	if err != nil {
+		return models.DomainFields{}, err
+	}
+
+	return domain, nil
 }
 
-func (repo CloudControllerDomainRepository) findOneWithPath(path, name string) (domain models.DomainFields, apiErr error) {
+func (repo CloudControllerDomainRepository) findOneWithPath(path, name string) (models.DomainFields, error) {
 	foundDomain := false
-	apiErr = repo.listDomains(path, func(result models.DomainFields) bool {
+	var domain models.DomainFields
+	err := repo.listDomains(path, func(result models.DomainFields) bool {
 		domain = result
 		foundDomain = true
 		return false
 	})
 
-	if apiErr == nil && !foundDomain {
-		apiErr = errors.NewModelNotFoundError("Domain", name)
+	if err == nil && !foundDomain {
+		err = errors.NewModelNotFoundError("Domain", name)
 	}
 
-	return
+	if err != nil {
+		return models.DomainFields{}, err
+	}
+
+	return domain, nil
 }
 
-func (repo CloudControllerDomainRepository) Create(domainName string, owningOrgGuid string) (createdDomain models.DomainFields, err error) {
+func (repo CloudControllerDomainRepository) Create(domainName string, owningOrgGuid string) (models.DomainFields, error) {
 	data, err := json.Marshal(resources.DomainEntity{
 		Name: domainName,
 		OwningOrganizationGuid: owningOrgGuid,
@@ -109,7 +118,7 @@ func (repo CloudControllerDomainRepository) Create(domainName string, owningOrgG
 	})
 
 	if err != nil {
-		return
+		return models.DomainFields{}, err
 	}
 
 	resource := new(resources.DomainResource)
@@ -120,17 +129,18 @@ func (repo CloudControllerDomainRepository) Create(domainName string, owningOrgG
 		resource)
 
 	if err != nil {
-		return
+		return models.DomainFields{}, err
 	}
 
-	createdDomain = resource.ToFields()
-	return
+	createdDomain := resource.ToFields()
+	return createdDomain, nil
 }
 
-func (repo CloudControllerDomainRepository) CreateSharedDomain(domainName string) error {
+func (repo CloudControllerDomainRepository) CreateSharedDomain(domainName string, routerGroupGuid string) error {
 	data, err := json.Marshal(resources.DomainEntity{
-		Name:     domainName,
-		Wildcard: true,
+		Name:            domainName,
+		RouterGroupGuid: routerGroupGuid,
+		Wildcard:        true,
 	})
 	if err != nil {
 		return err
@@ -155,13 +165,20 @@ func (repo CloudControllerDomainRepository) DeleteSharedDomain(domainGuid string
 		repo.strategy.DeleteSharedDomainURL(domainGuid))
 }
 
-func (repo CloudControllerDomainRepository) FirstOrDefault(orgGuid string, name *string) (domain models.DomainFields, error error) {
+func (repo CloudControllerDomainRepository) FirstOrDefault(orgGuid string, name *string) (models.DomainFields, error) {
+	var domain models.DomainFields
+	var err error
 	if name == nil {
-		domain, error = repo.defaultDomain(orgGuid)
+		domain, err = repo.defaultDomain(orgGuid)
 	} else {
-		domain, error = repo.FindByNameInOrg(*name, orgGuid)
+		domain, err = repo.FindByNameInOrg(*name, orgGuid)
 	}
-	return
+
+	if err != nil {
+		return models.DomainFields{}, err
+	}
+
+	return domain, nil
 }
 
 func (repo CloudControllerDomainRepository) defaultDomain(orgGuid string) (models.DomainFields, error) {

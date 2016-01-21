@@ -156,6 +156,10 @@
     "translation": "   [-i NUM_INSTANCES] [-k DISK] [-m MEMORY] [--hostname HOST] [-p PATH] [-s STACK] [-t TIMEOUT] [-u HEALTH_CHECK_TYPE] \n"
   },
   {
+    "id": " [--router-group ROUTER_GROUP]",
+    "translation": ""
+  },
+  {
     "id": " added as '",
     "translation": " 已添加为"
   },
@@ -2376,6 +2380,10 @@
     "translation": ""
   },
   {
+    "id": "Incorrect Usage. Requires DOMAIN as an argument\n\n",
+    "translation": ""
+  },
+  {
     "id": "Incorrect Usage. Requires LABEL, PROVIDER and TOKEN as arguments\n\n",
     "translation": "用法不正确。需要 LABEL、PROVIDER 和 TOKEN 作为参数\n\n"
   },
@@ -3480,8 +3488,16 @@
     "translation": ""
   },
   {
+    "id": "Router group {{.RouterGroup}} not found",
+    "translation": ""
+  },
+  {
     "id": "Routes",
     "translation": "路径"
+  },
+  {
+    "id": "Routes for this domain will be configured only on the specified router group",
+    "translation": ""
   },
   {
     "id": "Routing API URI missing. Please log in again to set the URI automatically.",

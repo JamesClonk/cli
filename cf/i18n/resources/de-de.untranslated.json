@@ -12,6 +12,10 @@
     "translation": "   CF_NAME push [-f MANIFEST_PATH]\n"
   },
   {
+    "id": " [--router-group ROUTER_GROUP]",
+    "translation": " [--router-group ROUTER_GROUP]"
+  },
+  {
     "id": "ALIAS",
     "translation": "ALIAS"
   },
@@ -580,6 +584,10 @@
     "translation": "Incorrect Usage. Requires DOMAIN and SERVICE_INSTANCE as arguments\n\n"
   },
   {
+    "id": "Incorrect Usage. Requires DOMAIN as an argument\n\n",
+    "translation": "Incorrect Usage. Requires DOMAIN as an argument\n\n"
+  },
+  {
     "id": "NAME",
     "translation": "NAME"
   },
@@ -630,6 +638,14 @@
   {
     "id": "Route {{.URL}} is already bound to service instance {{.ServiceInstanceName}}.",
     "translation": "Route {{.URL}} is already bound to service instance {{.ServiceInstanceName}}."
+  },
+  {
+    "id": "Router group {{.RouterGroup}} not found",
+    "translation": "Router group {{.RouterGroup}} not found"
+  },
+  {
+    "id": "Routes for this domain will be configured only on the specified router group",
+    "translation": "Routes for this domain will be configured only on the specified router group"
   },
   {
     "id": "SERVICES",
