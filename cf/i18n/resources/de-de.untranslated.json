@@ -544,6 +544,14 @@
     "translation": "Dashboard: {{.URL}}"
   },
   {
+    "id": "Error deleting domain {{.DomainName}}\n{{.Error}}",
+    "translation": "Error deleting domain {{.DomainName}}\n{{.Error}}"
+  },
+  {
+    "id": "Error finding domain {{.DomainName}}\n{{.Error}}",
+    "translation": "Error finding domain {{.DomainName}}\n{{.Error}}"
+  },
+  {
     "id": "Error getting the redirected location: {{.Error}}",
     "translation": "Error getting the redirected location: {{.Error}}"
   },
@@ -556,6 +564,10 @@
     "translation": "Error requesting one time code from server: {{.Error}}"
   },
   {
+    "id": "Failed fetching domains.\n{{.Error}}",
+    "translation": "Failed fetching domains.\n{{.Error}}"
+  },
+  {
     "id": "Features",
     "translation": "Features"
   },
@@ -566,6 +578,10 @@
   {
     "id": "Force unbinding without confirmation",
     "translation": "Force unbinding without confirmation"
+  },
+  {
+    "id": "Getting domains in org {{.OrgName}} as {{.Username}}...",
+    "translation": "Getting domains in org {{.OrgName}} as {{.Username}}..."
   },
   {
     "id": "Getting routes for org {{.OrgName}} / space {{.SpaceName}} as {{.Username}} ...\n",
@@ -586,6 +602,10 @@
   {
     "id": "Incorrect Usage. Requires DOMAIN as an argument\n\n",
     "translation": "Incorrect Usage. Requires DOMAIN as an argument\n\n"
+  },
+  {
+    "id": "Invalid router group guid: {{.Guid}}",
+    "translation": "Invalid router group guid: {{.Guid}}"
   },
   {
     "id": "NAME",
